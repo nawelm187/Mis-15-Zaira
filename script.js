@@ -36,6 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initLightbox();
   initRsvpModal();
   initConfetti();
+  initPhotoBackdrop();
 });
 
 /* ---------------------------------------------------------
@@ -526,4 +527,70 @@ function initConfetti(){
     if (document.hidden){ running = false; }
     else { running = true; start(); }
   });
+}
+
+/* ---------------------------------------------------------
+   Fondo de fotos: se achica, se achata y desaparece
+   mientras la siguiente aparece desde abajo, al scrollear.
+   --------------------------------------------------------- */
+function initPhotoBackdrop(){
+  const imgs = Array.from(document.querySelectorAll(".photo-backdrop__img"));
+  if (imgs.length === 0) return;
+
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const total = imgs.length;
+  let segmentLength = window.innerHeight;
+  let ticking = false;
+
+  function update(){
+    ticking = false;
+    const scrollY = window.scrollY || window.pageYOffset;
+    const raw = scrollY / segmentLength;
+    const currentIndex = Math.min(Math.floor(raw), total - 1);
+    const progress = Math.max(0, Math.min(raw - currentIndex, 1));
+
+    imgs.forEach((img, i) => {
+      if (reduceMotion){
+        img.style.opacity = i === currentIndex ? "1" : "0";
+        img.style.transform = "none";
+        return;
+      }
+
+      if (i === currentIndex){
+        // se achica, se achata y se desvanece
+        const scaleX = 1 - progress * 0.12;
+        const scaleY = 1 - progress * 0.38;
+        img.style.opacity = String(1 - progress);
+        img.style.transform = `scale(${scaleX}, ${scaleY}) translateY(${progress * -6}%)`;
+      } else if (i === currentIndex + 1){
+        // aparece desde abajo, creciendo hasta su tamaño normal
+        const scaleX = 0.94 + progress * 0.06;
+        const scaleY = 0.62 + progress * 0.38;
+        img.style.opacity = String(progress);
+        img.style.transform = `scale(${scaleX}, ${scaleY}) translateY(${(1 - progress) * 8}%)`;
+      } else if (i < currentIndex){
+        img.style.opacity = "0";
+        img.style.transform = "scale(0.88, 0.62)";
+      } else {
+        img.style.opacity = "0";
+        img.style.transform = "scale(0.94, 0.62) translateY(8%)";
+      }
+    });
+  }
+
+  function onScroll(){
+    if (!ticking){
+      ticking = true;
+      requestAnimationFrame(update);
+    }
+  }
+
+  function onResize(){
+    segmentLength = window.innerHeight;
+    update();
+  }
+
+  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", onResize);
+  update();
 }

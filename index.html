@@ -83,6 +83,18 @@
   <span class="bg-dot" style="top:93%; left:33%;"></span>
 </div>
 
+<!-- ================= FONDO DE FOTOS (transición al scrollear) ================= -->
+<div class="photo-backdrop" id="photo-backdrop" aria-hidden="true">
+  <img class="photo-backdrop__img" data-i="0" src="./assets/zaira.jpg" alt="">
+  <img class="photo-backdrop__img" data-i="1" src="./assets/foto1.jpg" alt="">
+  <img class="photo-backdrop__img" data-i="2" src="./assets/foto2.jpg" alt="">
+  <img class="photo-backdrop__img" data-i="3" src="./assets/foto3.jpg" alt="">
+  <img class="photo-backdrop__img" data-i="4" src="./assets/foto4.jpg" alt="">
+  <img class="photo-backdrop__img" data-i="5" src="./assets/foto5.jpg" alt="">
+  <img class="photo-backdrop__img" data-i="6" src="./assets/foto6.jpg" alt="">
+  <div class="photo-backdrop__overlay"></div>
+</div>
+
 <!-- ================= MUSIC PLAYER ================= -->
 <audio id="bg-music" loop preload="none">
   <source src="./assets/musica.mp3" type="audio/mpeg">
@@ -97,7 +109,6 @@
 <!-- ================= HERO ================= -->
 <header class="hero" id="hero">
   <div class="hero__bg">
-    <img src="./assets/zaira.jpg" alt="Retrato de Zaira" class="hero__photo" id="hero-photo" width="1200" height="1500">
     <div class="hero__overlay"></div>
     <div class="hero__vignette"></div>
   </div>
