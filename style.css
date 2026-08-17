@@ -88,6 +88,86 @@ button:focus-visible{
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
+/* ============== FONDO DECORATIVO: globos + puntos ============== */
+.bg-decor{
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.balloon{
+  position: absolute;
+  width: 46px;
+  height: 58px;
+  border-radius: 50% 50% 50% 50% / 58% 58% 42% 42%;
+  opacity: 0.16;
+  animation: balloon-float 14s ease-in-out infinite;
+}
+.balloon::before{
+  /* brillo */
+  content: "";
+  position: absolute;
+  top: 12%;
+  left: 22%;
+  width: 30%;
+  height: 22%;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.35);
+  filter: blur(1px);
+}
+.balloon::after{
+  /* hilo */
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  width: 1px;
+  height: 90px;
+  background: linear-gradient(var(--gold-mist), transparent);
+  opacity: 0.5;
+}
+
+.balloon--1{ top: 78%; left: 10%; width: 40px; height: 50px; background: radial-gradient(circle at 32% 28%, var(--gold-light), var(--gold) 55%, var(--gold-dark) 100%); animation-duration: 16s; animation-delay: 0s; }
+.balloon--2{ top: 62%; left: 85%; width: 54px; height: 68px; background: radial-gradient(circle at 32% 28%, var(--gold-bright), var(--gold-light) 55%, var(--gold) 100%); opacity: 0.12; animation-duration: 19s; animation-delay: 2s; }
+.balloon--3{ top: 88%; left: 45%; width: 34px; height: 42px; background: radial-gradient(circle at 32% 28%, var(--gold-light), var(--gold-dark) 100%); opacity: 0.14; animation-duration: 13s; animation-delay: 4s; }
+.balloon--4{ top: 15%; left: 6%; width: 30px; height: 38px; background: radial-gradient(circle at 32% 28%, var(--gold-light), var(--gold) 60%, var(--gold-dark) 100%); opacity: 0.1; animation-duration: 17s; animation-delay: 1s; }
+.balloon--5{ top: 5%; left: 92%; width: 44px; height: 55px; background: radial-gradient(circle at 32% 28%, var(--gold-bright), var(--gold) 55%, var(--gold-dark) 100%); opacity: 0.13; animation-duration: 20s; animation-delay: 3s; }
+.balloon--6{ top: 35%; left: 95%; width: 26px; height: 33px; background: radial-gradient(circle at 32% 28%, var(--gold-light), var(--gold-dark) 100%); opacity: 0.1; animation-duration: 15s; animation-delay: 5s; }
+
+@keyframes balloon-float{
+  0%, 100%{ transform: translateY(0) translateX(0) rotate(-2deg); }
+  50%{ transform: translateY(-26px) translateX(10px) rotate(2deg); }
+}
+
+.bg-dot{
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--black-light);
+  border: 1px solid rgba(212,175,55,0.18);
+  opacity: 0.55;
+  animation: dot-pulse 6s ease-in-out infinite;
+}
+.bg-dot:nth-child(odd){ animation-duration: 7.5s; }
+.bg-dot:nth-child(3n){ width: 3px; height: 3px; }
+.bg-dot:nth-child(4n){ width: 5px; height: 5px; opacity: 0.4; }
+
+@keyframes dot-pulse{
+  0%, 100%{ opacity: 0.3; transform: scale(0.9); }
+  50%{ opacity: 0.6; transform: scale(1.15); }
+}
+
+@media (max-width: 480px){
+  .balloon{ transform: scale(0.8); }
+}
+
+@media (prefers-reduced-motion: reduce){
+  .balloon, .bg-dot{ animation: none; }
+}
+
 /* ============== BUTTONS ============== */
 .btn{
   position: relative;
@@ -615,6 +695,69 @@ button:focus-visible{
 .lightbox__nav--prev{ left: max(10px, env(safe-area-inset-left)); top: 50%; transform: translateY(-50%); }
 .lightbox__nav--next{ right: max(10px, env(safe-area-inset-right)); top: 50%; transform: translateY(-50%); }
 .lightbox__nav:hover, .lightbox__close:hover{ border-color: var(--gold); }
+
+/* ============== RSVP MODAL (Google Forms) ============== */
+.rsvp-modal{
+  position: fixed;
+  inset: 0;
+  z-index: 950;
+  background: rgba(0,0,0,0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: max(20px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(20px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
+  animation: fadein 0.3s ease;
+}
+.rsvp-modal[hidden]{ display: none; }
+
+.rsvp-modal__panel{
+  position: relative;
+  width: 100%;
+  max-width: 560px;
+  height: min(88vh, 780px);
+  background: var(--black-soft);
+  border: 1px solid var(--gold-mist);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.7);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.rsvp-modal__body{
+  width: 100%;
+  height: 100%;
+}
+.rsvp-modal__body iframe{
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: #fff;
+}
+
+.rsvp-modal__close{
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid var(--gold-mist);
+  background: rgba(7,6,5,0.75);
+  color: var(--gold-light);
+}
+.rsvp-modal__close svg{
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: var(--gold-light);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.rsvp-modal__close:hover{ border-color: var(--gold); }
 
 /* ============== DRESS CODE ============== */
 .dresscode-section .section__title{ margin-bottom: 0; }

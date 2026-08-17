@@ -25,6 +25,28 @@
 <!-- ================= DECORATIVE NOISE / VIGNETTE ================= -->
 <div class="grain" aria-hidden="true"></div>
 
+<!-- ================= DECORATIVE BACKGROUND: globos y puntos ================= -->
+<div class="bg-decor" aria-hidden="true">
+  <span class="balloon balloon--1"></span>
+  <span class="balloon balloon--2"></span>
+  <span class="balloon balloon--3"></span>
+  <span class="balloon balloon--4"></span>
+  <span class="balloon balloon--5"></span>
+  <span class="balloon balloon--6"></span>
+  <span class="bg-dot" style="top:8%; left:18%;"></span>
+  <span class="bg-dot" style="top:15%; left:74%;"></span>
+  <span class="bg-dot" style="top:27%; left:42%;"></span>
+  <span class="bg-dot" style="top:34%; left:88%;"></span>
+  <span class="bg-dot" style="top:41%; left:9%;"></span>
+  <span class="bg-dot" style="top:52%; left:60%;"></span>
+  <span class="bg-dot" style="top:58%; left:24%;"></span>
+  <span class="bg-dot" style="top:66%; left:80%;"></span>
+  <span class="bg-dot" style="top:73%; left:14%;"></span>
+  <span class="bg-dot" style="top:79%; left:47%;"></span>
+  <span class="bg-dot" style="top:87%; left:68%;"></span>
+  <span class="bg-dot" style="top:93%; left:33%;"></span>
+</div>
+
 <!-- ================= MUSIC PLAYER ================= -->
 <audio id="bg-music" loop preload="none">
   <source src="./assets/musica.mp3" type="audio/mpeg">
@@ -188,6 +210,18 @@
     </button>
   </div>
 
+  <!-- Modal RSVP (Google Forms embebido) -->
+  <div class="rsvp-modal" id="rsvp-modal" role="dialog" aria-modal="true" aria-label="Formulario de confirmación de asistencia" hidden>
+    <div class="rsvp-modal__panel">
+      <button class="rsvp-modal__close" id="rsvp-modal-close" aria-label="Cerrar formulario">
+        <svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+      <div class="rsvp-modal__body" id="rsvp-modal-body">
+        <!-- El iframe se inserta por JS solo cuando se abre, para no cargar de más -->
+      </div>
+    </div>
+  </div>
+
   <div class="divider reveal" data-reveal aria-hidden="true"><span></span></div>
 
   <!-- ================= DRESS CODE ================= -->
@@ -203,9 +237,9 @@
     <p class="section__eyebrow reveal" data-reveal>Confirmación</p>
     <h2 class="section__title reveal" data-reveal>¿Venís a celebrar conmigo?</h2>
     <p class="rsvp__text reveal" data-reveal>Confirmá tu asistencia</p>
-    <a href="#" id="rsvp-link" class="btn btn--gold reveal" data-reveal target="_blank" rel="noopener noreferrer">
+    <button type="button" id="rsvp-open" class="btn btn--gold reveal" data-reveal>
       <span>Confirmar asistencia</span>
-    </a>
+    </button>
   </section>
 
   <!-- ================= INSTAGRAM ================= -->
@@ -220,9 +254,6 @@
     <div class="closing__ornament reveal" data-reveal aria-hidden="true">✦</div>
     <p class="closing__text reveal" data-reveal>Te espero para compartir<br>una noche inolvidable</p>
     <p class="closing__signature reveal" data-reveal>Con cariño,<br><span>Zaira</span></p>
-    <a href="#" id="rsvp-link-2" class="btn btn--gold reveal" data-reveal target="_blank" rel="noopener noreferrer">
-      <span>Confirmar asistencia</span>
-    </a>
     <p class="closing__credit">Mis 15 · Zaira</p>
   </footer>
 

@@ -16,8 +16,10 @@ const CONFIG = {
   direccion: "[DIRECCIÓN]",
   maps: "[LINK_DE_GOOGLE_MAPS]",     // ej: "https://maps.app.goo.gl/xxxxx"
 
-  whatsapp: "[WHATSAPP]",            // ej: "5491122334455" (código país + número, sin + ni espacios)
-  mensajeWhatsapp: "Hola Zaira! Confirmo mi asistencia a tus 15 años \uD83D\uDC95",
+  // Formulario de confirmación de asistencia (Google Forms).
+  // Pegá acá el link de tu formulario, tal cual lo copiás de "Enviar" → pestaña de link.
+  // El script arma automáticamente la versión "embebida" a partir de este link.
+  googleFormUrl: "[LINK_DEL_FORMULARIO_DE_GOOGLE]", // ej: "https://forms.gle/xxxxx" o "https://docs.google.com/forms/d/e/.../viewform"
 
   instagram: "[INSTAGRAM]",          // ej: "https://instagram.com/zaira" o "@zaira" — dejar "" para ocultar
 
@@ -32,6 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initMusic();
   initGallery();
   initLightbox();
+  initRsvpModal();
 });
 
 /* ---------------------------------------------------------
@@ -56,18 +59,14 @@ function applyConfig(){
     }
   }
 
-  // WhatsApp (RSVP) — dos botones apuntan al mismo enlace
-  const waHref = buildWhatsappLink(CONFIG.whatsapp, CONFIG.mensajeWhatsapp);
-  ["rsvp-link", "rsvp-link-2"].forEach((id) => {
-    const el = document.getElementById(id);
-    if (!el) return;
-    if (waHref){
-      el.href = waHref;
-    } else {
-      el.href = "#rsvp";
-      el.addEventListener("click", (e) => e.preventDefault());
+  // Formulario de confirmación (Google Forms) — botón único
+  const rsvpBtn = document.getElementById("rsvp-open");
+  if (rsvpBtn){
+    if (isPlaceholder(CONFIG.googleFormUrl)){
+      rsvpBtn.setAttribute("aria-disabled", "true");
+      rsvpBtn.title = "El formulario todavía no está configurado";
     }
-  });
+  }
 
   // Instagram (opcional)
   const igSection = document.getElementById("instagram-section");
@@ -93,11 +92,17 @@ function isPlaceholder(value){
   return !value || /^\[.*\]$/.test(value.trim());
 }
 
-function buildWhatsappLink(number, message){
-  if (isPlaceholder(number)) return null;
-  const digits = number.replace(/[^\d]/g, "");
-  if (!digits) return null;
-  return `https://wa.me/${digits}?text=${encodeURIComponent(message)}`;
+/* Convierte cualquier link de Google Forms (forms.gle o docs.google.com)
+   en su versión embebida dentro de un iframe. */
+function toEmbeddableFormUrl(url){
+  let clean = url.trim();
+  // Si ya tiene parámetros, respetarlos y solo asegurar embedded=true
+  if (/[?&]embedded=true/.test(clean)) return clean;
+  if (/\/viewform/.test(clean)){
+    return clean.split("?")[0] + "?embedded=true";
+  }
+  // Links cortos forms.gle: Google los resuelve igual con el parámetro.
+  return clean + (clean.includes("?") ? "&" : "?") + "embedded=true";
 }
 
 function normalizeInstagram(value){
@@ -337,4 +342,45 @@ function renderLightboxImage(){
   if (!img || !data) return;
   img.src = data.src;
   img.alt = data.alt || "";
+}
+
+/* ---------------------------------------------------------
+   Modal de confirmación (Google Forms embebido)
+   --------------------------------------------------------- */
+function initRsvpModal(){
+  const openBtn = document.getElementById("rsvp-open");
+  const modal = document.getElementById("rsvp-modal");
+  const closeBtn = document.getElementById("rsvp-modal-close");
+  const body = document.getElementById("rsvp-modal-body");
+  if (!openBtn || !modal || !body) return;
+
+  openBtn.addEventListener("click", () => {
+    if (isPlaceholder(CONFIG.googleFormUrl)){
+      // Formulario aún no configurado: no rompe nada, solo no abre.
+      return;
+    }
+    // Insertar el iframe recién al abrir, para no cargar Google Forms de más.
+    if (!body.querySelector("iframe")){
+      const iframe = document.createElement("iframe");
+      iframe.src = toEmbeddableFormUrl(CONFIG.googleFormUrl);
+      iframe.title = "Formulario de confirmación de asistencia";
+      iframe.loading = "lazy";
+      body.appendChild(iframe);
+    }
+    modal.hidden = false;
+    document.body.style.overflow = "hidden";
+  });
+
+  function closeModal(){
+    modal.hidden = true;
+    document.body.style.overflow = "";
+  }
+
+  closeBtn.addEventListener("click", closeModal);
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) closeModal();
+  });
+  document.addEventListener("keydown", (e) => {
+    if (!modal.hidden && e.key === "Escape") closeModal();
+  });
 }
