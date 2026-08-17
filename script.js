@@ -8,18 +8,18 @@ const CONFIG = {
 
   // Fecha y hora del evento. Usar formato ISO en "fechaISO" (para el
   // conteo regresivo) y el texto que se muestra en pantalla en "fecha"/"hora".
-  fechaISO: "2026-12-10T20:00:00", // [FECHA_ISO] — usada por la cuenta regresiva
-  fecha: "12 De Octubre",                 // ej: "Sábado 12 de Diciembre de 2026"
-  hora: "20:00",                   // ej: "20:00 hs"
+  fechaISO: "2026-10-12T20:00:00", // [FECHA_ISO] — usada por la cuenta regresiva
+  fecha: "Lunes 12 de Octubre de 2026",                 // ej: "Sábado 12 de Diciembre de 2026"
+  hora: "20:00 hs",                   // ej: "20:00 hs"
 
-  lugar: "Las Acacias",
-  direccion: "[DIRECCIÓN]",
-  maps: "[LINK_DE_GOOGLE_MAPS]",     // ej: "https://maps.app.goo.gl/xxxxx"
+  lugar: "Las Acacías",
+  direccion: "Mármol 248, B2752 Cap. Sarmiento, Provincia de Buenos Aires",
+  maps: "https://maps.app.goo.gl/sR8Av94uo7G55TpX6",
 
   // Formulario de confirmación de asistencia (Google Forms).
   // Pegá acá el link de tu formulario, tal cual lo copiás de "Enviar" → pestaña de link.
   // El script arma automáticamente la versión "embebida" a partir de este link.
-  googleFormUrl: "[LINK_DEL_FORMULARIO_DE_GOOGLE]", // ej: "https://forms.gle/xxxxx" o "https://docs.google.com/forms/d/e/.../viewform"
+  googleFormUrl: "https://forms.gle/dTb7YN81ojq3YG6u9", // ej: "https://forms.gle/xxxxx" o "https://docs.google.com/forms/d/e/.../viewform"
 
   instagram: "[INSTAGRAM]",          // ej: "https://instagram.com/zaira" o "@zaira" — dejar "" para ocultar
 
