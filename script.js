@@ -8,11 +8,11 @@ const CONFIG = {
 
   // Fecha y hora del evento. Usar formato ISO en "fechaISO" (para el
   // conteo regresivo) y el texto que se muestra en pantalla en "fecha"/"hora".
-  fechaISO: "2026-12-12T20:00:00", // [FECHA_ISO] — usada por la cuenta regresiva
-  fecha: "[FECHA]",                 // ej: "Sábado 12 de Diciembre de 2026"
-  hora: "[HORA]",                   // ej: "20:00 hs"
+  fechaISO: "2026-12-10T20:00:00", // [FECHA_ISO] — usada por la cuenta regresiva
+  fecha: "12 De Octubre",                 // ej: "Sábado 12 de Diciembre de 2026"
+  hora: "20:00",                   // ej: "20:00 hs"
 
-  lugar: "[LUGAR]",
+  lugar: "Las Acacias",
   direccion: "[DIRECCIÓN]",
   maps: "[LINK_DE_GOOGLE_MAPS]",     // ej: "https://maps.app.goo.gl/xxxxx"
 
@@ -23,7 +23,7 @@ const CONFIG = {
 
   instagram: "[INSTAGRAM]",          // ej: "https://instagram.com/zaira" o "@zaira" — dejar "" para ocultar
 
-  dressCode: "[DRESS CODE]"          // ej: "Elegante Sport"
+  dressCode: "Elegante"          // ej: "Elegante Sport"
 };
 
 document.addEventListener("DOMContentLoaded", () => {
