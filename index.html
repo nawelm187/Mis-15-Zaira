@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Mis 15 — Zaira</title>
+<meta name="description" content="Acompañame a celebrar mis 15 años. Una noche para recordar toda la vida.">
+
+<!-- Open Graph -->
+<meta property="og:title" content="Mis 15 — Zaira">
+<meta property="og:description" content="Acompañame a celebrar mis 15 años. Una noche para recordar toda la vida.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="./assets/zaira.jpg">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23000'/%3E%3Ctext x='50' y='68' font-size='60' text-anchor='middle' fill='%23D4AF37' font-family='serif'%3EZ%3C/text%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,500;0,600;1,400;1,500&family=Playfair+Display:wght@400;600;700;800&family=Marcellus&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="./style.css">
+</head>
+<body>
+
+<!-- ================= DECORATIVE NOISE / VIGNETTE ================= -->
+<div class="grain" aria-hidden="true"></div>
+
+<!-- ================= MUSIC PLAYER ================= -->
+<audio id="bg-music" loop preload="none">
+  <source src="./assets/musica.mp3" type="audio/mpeg">
+</audio>
+<button id="music-toggle" class="music-btn" aria-label="Reproducir música" aria-pressed="false" hidden>
+  <span class="music-icon" aria-hidden="true">
+    <svg viewBox="0 0 24 24" class="icon-play"><path d="M8 5v14l11-7z"/></svg>
+    <svg viewBox="0 0 24 24" class="icon-pause"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>
+  </span>
+</button>
+
+<!-- ================= HERO ================= -->
+<header class="hero" id="hero">
+  <div class="hero__bg">
+    <img src="./assets/zaira.jpg" alt="Retrato de Zaira" class="hero__photo" id="hero-photo" width="1200" height="1500">
+    <div class="hero__overlay"></div>
+    <div class="hero__vignette"></div>
+  </div>
+
+  <div class="sparkles" aria-hidden="true">
+    <span></span><span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span><span></span>
+  </div>
+
+  <div class="hero__content">
+    <p class="eyebrow reveal" data-reveal>Mis 15</p>
+    <h1 class="hero__name reveal" data-reveal>
+      <span class="hero__name-line">Z A I R A</span>
+    </h1>
+    <div class="hero__rule reveal" data-reveal aria-hidden="true"></div>
+    <p class="hero__tagline reveal" data-reveal>Una noche para recordar toda la vida</p>
+
+    <button id="open-invite" class="btn btn--gold hero__cta reveal" data-reveal>
+      <span>Abrir invitación</span>
+    </button>
+  </div>
+
+  <div class="scroll-hint" aria-hidden="true">
+    <span></span>
+  </div>
+</header>
+
+<!-- Everything below is revealed after "Abrir invitación" for a smooth cinematic entrance,
+     but stays fully accessible/crawlable in the DOM regardless of JS state. -->
+<main id="main-content">
+
+  <!-- ================= COUNTDOWN ================= -->
+  <section class="section countdown-section" id="countdown">
+    <p class="section__eyebrow reveal" data-reveal>Faltan</p>
+    <div class="countdown" id="countdown-timer" aria-live="polite">
+      <div class="countdown__unit reveal" data-reveal>
+        <span class="countdown__value" id="cd-days">00</span>
+        <span class="countdown__label">Días</span>
+      </div>
+      <div class="countdown__sep" aria-hidden="true">:</div>
+      <div class="countdown__unit reveal" data-reveal>
+        <span class="countdown__value" id="cd-hours">00</span>
+        <span class="countdown__label">Horas</span>
+      </div>
+      <div class="countdown__sep" aria-hidden="true">:</div>
+      <div class="countdown__unit reveal" data-reveal>
+        <span class="countdown__value" id="cd-minutes">00</span>
+        <span class="countdown__label">Minutos</span>
+      </div>
+      <div class="countdown__sep" aria-hidden="true">:</div>
+      <div class="countdown__unit reveal" data-reveal>
+        <span class="countdown__value" id="cd-seconds">00</span>
+        <span class="countdown__label">Segundos</span>
+      </div>
+    </div>
+    <p class="countdown__today" id="countdown-today" hidden>¡Hoy es el gran día!</p>
+  </section>
+
+  <div class="divider reveal" data-reveal aria-hidden="true"><span></span></div>
+
+  <!-- ================= MENSAJE DE ZAIRA ================= -->
+  <section class="section message-section" id="mensaje">
+    <p class="section__eyebrow reveal" data-reveal>Un momento para vos</p>
+    <blockquote class="message reveal" data-reveal>
+      <p>“Hay momentos que quedan para siempre en el corazón&hellip;<br>
+      y quiero compartir uno de los más importantes de mi vida con vos.”</p>
+      <footer>— Zaira</footer>
+    </blockquote>
+  </section>
+
+  <div class="divider reveal" data-reveal aria-hidden="true"><span></span></div>
+
+  <!-- ================= FECHA Y LUGAR ================= -->
+  <section class="section details-section" id="detalles">
+    <p class="section__eyebrow reveal" data-reveal>Fecha y lugar</p>
+    <h2 class="section__title reveal" data-reveal>La celebración</h2>
+
+    <div class="details-grid">
+      <div class="detail-card reveal" data-reveal>
+        <span class="detail-card__icon" aria-hidden="true">✦</span>
+        <span class="detail-card__label">Fecha</span>
+        <span class="detail-card__value" id="detail-fecha">[FECHA]</span>
+      </div>
+      <div class="detail-card reveal" data-reveal>
+        <span class="detail-card__icon" aria-hidden="true">✦</span>
+        <span class="detail-card__label">Hora</span>
+        <span class="detail-card__value" id="detail-hora">[HORA]</span>
+      </div>
+      <div class="detail-card reveal" data-reveal>
+        <span class="detail-card__icon" aria-hidden="true">✦</span>
+        <span class="detail-card__label">Lugar</span>
+        <span class="detail-card__value" id="detail-lugar">[LUGAR]</span>
+      </div>
+      <div class="detail-card reveal" data-reveal>
+        <span class="detail-card__icon" aria-hidden="true">✦</span>
+        <span class="detail-card__label">Dirección</span>
+        <span class="detail-card__value" id="detail-direccion">[DIRECCIÓN]</span>
+      </div>
+    </div>
+
+    <a href="#" id="maps-link" class="btn btn--outline reveal" data-reveal target="_blank" rel="noopener noreferrer">
+      <span>Ver ubicación</span>
+    </a>
+  </section>
+
+  <div class="divider reveal" data-reveal aria-hidden="true"><span></span></div>
+
+  <!-- ================= GALERÍA ================= -->
+  <section class="section gallery-section" id="galeria">
+    <p class="section__eyebrow reveal" data-reveal>Momentos</p>
+    <h2 class="section__title reveal" data-reveal>Galería</h2>
+
+    <div class="gallery" id="gallery">
+      <button class="gallery__item gallery__item--tall reveal" data-reveal data-index="0">
+        <img src="./assets/foto1.jpg" alt="Fotografía de Zaira 1" loading="lazy" width="1000" height="1000">
+      </button>
+      <button class="gallery__item reveal" data-reveal data-index="1">
+        <img src="./assets/foto2.jpg" alt="Fotografía de Zaira 2" loading="lazy" width="1000" height="1000">
+      </button>
+      <button class="gallery__item reveal" data-reveal data-index="2">
+        <img src="./assets/foto3.jpg" alt="Fotografía de Zaira 3" loading="lazy" width="1000" height="1000">
+      </button>
+      <button class="gallery__item reveal" data-reveal data-index="3">
+        <img src="./assets/foto4.jpg" alt="Fotografía de Zaira 4" loading="lazy" width="1000" height="1000">
+      </button>
+      <button class="gallery__item gallery__item--tall reveal" data-reveal data-index="4">
+        <img src="./assets/foto5.jpg" alt="Fotografía de Zaira 5" loading="lazy" width="1000" height="1000">
+      </button>
+      <button class="gallery__item reveal" data-reveal data-index="5">
+        <img src="./assets/foto6.jpg" alt="Fotografía de Zaira 6" loading="lazy" width="1000" height="1000">
+      </button>
+    </div>
+  </section>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Visor de fotografías" hidden>
+    <button class="lightbox__close" id="lightbox-close" aria-label="Cerrar visor">
+      <svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+    <button class="lightbox__nav lightbox__nav--prev" id="lightbox-prev" aria-label="Foto anterior">
+      <svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>
+    </button>
+    <img src="" alt="" class="lightbox__img" id="lightbox-img">
+    <button class="lightbox__nav lightbox__nav--next" id="lightbox-next" aria-label="Foto siguiente">
+      <svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>
+    </button>
+  </div>
+
+  <div class="divider reveal" data-reveal aria-hidden="true"><span></span></div>
+
+  <!-- ================= DRESS CODE ================= -->
+  <section class="section dresscode-section" id="dresscode">
+    <p class="section__eyebrow reveal" data-reveal>Dress code</p>
+    <h2 class="section__title reveal" data-reveal id="detail-dresscode">[DRESS CODE]</h2>
+  </section>
+
+  <div class="divider reveal" data-reveal aria-hidden="true"><span></span></div>
+
+  <!-- ================= RSVP ================= -->
+  <section class="section rsvp-section" id="rsvp">
+    <p class="section__eyebrow reveal" data-reveal>Confirmación</p>
+    <h2 class="section__title reveal" data-reveal>¿Venís a celebrar conmigo?</h2>
+    <p class="rsvp__text reveal" data-reveal>Confirmá tu asistencia</p>
+    <a href="#" id="rsvp-link" class="btn btn--gold reveal" data-reveal target="_blank" rel="noopener noreferrer">
+      <span>Confirmar asistencia</span>
+    </a>
+  </section>
+
+  <!-- ================= INSTAGRAM ================= -->
+  <section class="section instagram-section" id="instagram-section" hidden>
+    <a href="#" id="instagram-link" class="btn btn--outline btn--small reveal" data-reveal target="_blank" rel="noopener noreferrer">
+      <span>Instagram</span>
+    </a>
+  </section>
+
+  <!-- ================= CIERRE ================= -->
+  <footer class="closing">
+    <div class="closing__ornament reveal" data-reveal aria-hidden="true">✦</div>
+    <p class="closing__text reveal" data-reveal>Te espero para compartir<br>una noche inolvidable</p>
+    <p class="closing__signature reveal" data-reveal>Con cariño,<br><span>Zaira</span></p>
+    <a href="#" id="rsvp-link-2" class="btn btn--gold reveal" data-reveal target="_blank" rel="noopener noreferrer">
+      <span>Confirmar asistencia</span>
+    </a>
+    <p class="closing__credit">Mis 15 · Zaira</p>
+  </footer>
+
+</main>
+
+<script src="./script.js"></script>
+</body>
+</html>
