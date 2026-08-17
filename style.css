@@ -193,6 +193,36 @@ body::before{
   to{ transform: rotate(405deg) scale(1); }
 }
 
+/* estrellas doradas ambientales */
+.bg-star{
+  position: absolute;
+  width: var(--s, 8px);
+  height: var(--s, 8px);
+  background: var(--gold-light);
+  opacity: 0.5;
+  clip-path: polygon(50% 0%, 63% 38%, 100% 38%, 69% 60%, 82% 100%, 50% 76%, 18% 100%, 31% 60%, 0% 38%, 37% 38%);
+  animation: star-twinkle 4.5s ease-in-out infinite;
+}
+.bg-star:nth-child(odd){ animation-duration: 5.5s; }
+.bg-star:nth-child(3n){ background: var(--gold-bright); }
+.bg-star:nth-child(4n){ animation-delay: 1.2s; }
+.bg-star:nth-child(5n){ animation-delay: 2.4s; }
+
+@keyframes star-twinkle{
+  0%, 100%{ opacity: 0.15; transform: scale(0.85); }
+  50%{ opacity: 0.7; transform: scale(1.05); }
+}
+
+/* ============== SERPENTINAS CAYENDO (canvas) ============== */
+#confetti-canvas{
+  position: fixed;
+  inset: 0;
+  z-index: 400;
+  pointer-events: none;
+  width: 100%;
+  height: 100%;
+}
+
 .balloon{
   position: absolute;
   width: 46px;
@@ -263,7 +293,8 @@ body::before{
 }
 
 @media (prefers-reduced-motion: reduce){
-  .balloon, .bg-dot, .bg-diamond{ animation: none; }
+  .balloon, .bg-dot, .bg-diamond, .bg-star{ animation: none; }
+  #confetti-canvas{ display: none; }
 }
 
 /* ============== BUTTONS ============== */
