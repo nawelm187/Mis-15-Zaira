@@ -20,7 +20,13 @@
 
 <link rel="stylesheet" href="./style.css">
 </head>
-<body>
+<body class="is-locked">
+
+<!-- ================= PANTALLA DE CARGA ================= -->
+<div class="splash" id="splash" aria-hidden="true">
+  <span class="splash__monogram">Z</span>
+  <span class="splash__line"></span>
+</div>
 
 <!-- ================= DECORATIVE NOISE / VIGNETTE ================= -->
 <div class="grain" aria-hidden="true"></div>
@@ -209,9 +215,20 @@
       </div>
     </div>
 
-    <a href="#" id="maps-link" class="btn btn--outline reveal" data-reveal target="_blank" rel="noopener noreferrer">
-      <span>Ver ubicación</span>
-    </a>
+    <div class="details-actions reveal" data-reveal>
+      <a href="#" id="maps-link" class="btn btn--outline" target="_blank" rel="noopener noreferrer">
+        <span>Ver ubicación</span>
+      </a>
+      <div class="calendar-menu">
+        <button type="button" id="calendar-toggle" class="btn btn--outline" aria-haspopup="true" aria-expanded="false">
+          <span>Agregar al calendario</span>
+        </button>
+        <div class="calendar-menu__list" id="calendar-list" hidden>
+          <a href="#" id="calendar-google" target="_blank" rel="noopener noreferrer">Google Calendar</a>
+          <a href="#" id="calendar-ics">Apple / Outlook (.ics)</a>
+        </div>
+      </div>
+    </div>
   </section>
 
   <div class="divider reveal" data-reveal aria-hidden="true"><span></span></div>

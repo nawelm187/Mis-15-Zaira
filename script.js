@@ -11,6 +11,7 @@ const CONFIG = {
   fechaISO: "2026-10-10T20:00:00", // [FECHA_ISO] — usada por la cuenta regresiva
   fecha: "Sábado 10 de Octubre de 2026",                 // ej: "Sábado 12 de Diciembre de 2026"
   hora: "20:00 hs",                   // ej: "20:00 hs"
+  duracionHoras: 5,                   // duración estimada del evento, para el botón "Agregar al calendario"
 
   lugar: "Las Acacías",
   direccion: "Mármol 248, B2752 Cap. Sarmiento, Provincia de Buenos Aires",
@@ -37,6 +38,8 @@ document.addEventListener("DOMContentLoaded", () => {
   initRsvpModal();
   initConfetti();
   initPhotoBackdrop();
+  initSplash();
+  initCalendar();
 });
 
 /* ---------------------------------------------------------
@@ -200,7 +203,24 @@ function initHeroOpen(){
   const hero = document.getElementById("hero");
   if (!openBtn) return;
 
+  // Bloquea el scroll (rueda, touch y teclado) hasta que se toque el botón,
+  // para asegurar que la música arranque con un gesto real del usuario.
+  function blockEvent(e){ e.preventDefault(); }
+  const scrollKeys = ["ArrowDown", "ArrowUp", "PageDown", "PageUp", " ", "Spacebar", "Home", "End"];
+  function blockKeys(e){
+    if (scrollKeys.includes(e.key)) e.preventDefault();
+  }
+
+  document.addEventListener("wheel", blockEvent, { passive: false });
+  document.addEventListener("touchmove", blockEvent, { passive: false });
+  document.addEventListener("keydown", blockKeys);
+
   openBtn.addEventListener("click", () => {
+    document.body.classList.remove("is-locked");
+    document.removeEventListener("wheel", blockEvent);
+    document.removeEventListener("touchmove", blockEvent);
+    document.removeEventListener("keydown", blockKeys);
+
     // Intentar reproducir música tras la interacción del usuario.
     const audio = document.getElementById("bg-music");
     const musicBtn = document.getElementById("music-toggle");
@@ -593,4 +613,128 @@ function initPhotoBackdrop(){
   window.addEventListener("scroll", onScroll, { passive: true });
   window.addEventListener("resize", onResize);
   update();
+}
+
+/* ---------------------------------------------------------
+   Pantalla de carga (splash)
+   --------------------------------------------------------- */
+function initSplash(){
+  const splash = document.getElementById("splash");
+  if (!splash) return;
+
+  let hidden = false;
+  function hide(){
+    if (hidden) return;
+    hidden = true;
+    splash.classList.add("splash--hidden");
+    setTimeout(() => { splash.style.display = "none"; }, 650);
+  }
+
+  // se oculta apenas termina de cargar todo (fuentes, imágenes, etc.)
+  if (document.readyState === "complete"){
+    setTimeout(hide, 250);
+  } else {
+    window.addEventListener("load", () => setTimeout(hide, 250));
+  }
+  // resguardo: nunca se queda trabada más de 2.5s aunque algo falle en cargar
+  setTimeout(hide, 2500);
+}
+
+/* ---------------------------------------------------------
+   Botón "Agregar al calendario" (Google Calendar + .ics)
+   --------------------------------------------------------- */
+function pad2(n){ return String(n).padStart(2, "0"); }
+
+function parseEventDate(){
+  // CONFIG.fechaISO es hora local del evento (sin zona horaria explícita)
+  const m = CONFIG.fechaISO.match(/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})(?::(\d{2}))?/);
+  if (!m) return null;
+  const [, y, mo, d, h, mi, s] = m;
+  const start = new Date(Number(y), Number(mo) - 1, Number(d), Number(h), Number(mi), Number(s || 0));
+  const end = new Date(start.getTime() + (CONFIG.duracionHoras || 4) * 3600000);
+  return { start, end };
+}
+
+function formatICSDate(date){
+  return `${date.getFullYear()}${pad2(date.getMonth() + 1)}${pad2(date.getDate())}T${pad2(date.getHours())}${pad2(date.getMinutes())}${pad2(date.getSeconds())}`;
+}
+
+function initCalendar(){
+  const toggle = document.getElementById("calendar-toggle");
+  const list = document.getElementById("calendar-list");
+  const googleLink = document.getElementById("calendar-google");
+  const icsLink = document.getElementById("calendar-ics");
+  if (!toggle || !list || !googleLink || !icsLink) return;
+
+  const range = parseEventDate();
+  const title = `Mis 15 años de ${CONFIG.nombre}`;
+  const location = [CONFIG.lugar, CONFIG.direccion].filter((v) => !isPlaceholder(v)).join(", ");
+  const details = `Celebración de los 15 años de ${CONFIG.nombre}.`;
+
+  if (range){
+    // Google Calendar: horario local + zona horaria de Argentina
+    const startStr = formatICSDate(range.start);
+    const endStr = formatICSDate(range.end);
+    const gUrl = new URL("https://www.google.com/calendar/render");
+    gUrl.searchParams.set("action", "TEMPLATE");
+    gUrl.searchParams.set("text", title);
+    gUrl.searchParams.set("dates", `${startStr}/${endStr}`);
+    gUrl.searchParams.set("details", details);
+    gUrl.searchParams.set("location", location);
+    gUrl.searchParams.set("ctz", "America/Argentina/Buenos_Aires");
+    googleLink.href = gUrl.toString();
+
+    icsLink.addEventListener("click", (e) => {
+      e.preventDefault();
+      const ics = [
+        "BEGIN:VCALENDAR",
+        "VERSION:2.0",
+        "PRODID:-//Mis15//Zaira//ES",
+        "CALSCALE:GREGORIAN",
+        "BEGIN:VEVENT",
+        `UID:${Date.now()}@mis15zaira`,
+        `DTSTAMP:${formatICSDate(new Date())}`,
+        `DTSTART:${startStr}`,
+        `DTEND:${endStr}`,
+        `SUMMARY:${title}`,
+        `DESCRIPTION:${details}`,
+        `LOCATION:${location}`,
+        "END:VEVENT",
+        "END:VCALENDAR"
+      ].join("\r\n");
+
+      const blob = new Blob([ics], { type: "text/calendar;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "mis-15-zaira.ics";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    });
+  } else {
+    toggle.setAttribute("aria-disabled", "true");
+  }
+
+  function closeList(){
+    list.hidden = true;
+    toggle.setAttribute("aria-expanded", "false");
+  }
+  function toggleList(){
+    const willOpen = list.hidden;
+    list.hidden = !willOpen;
+    toggle.setAttribute("aria-expanded", String(willOpen));
+  }
+
+  toggle.addEventListener("click", (e) => {
+    e.stopPropagation();
+    toggleList();
+  });
+  document.addEventListener("click", (e) => {
+    if (!list.hidden && !list.contains(e.target) && e.target !== toggle) closeList();
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeList();
+  });
 }

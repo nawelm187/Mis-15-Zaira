@@ -53,6 +53,19 @@ body{
   -webkit-font-smoothing: antialiased;
 }
 
+/* Bloquea el scroll hasta tocar "Abrir invitación" */
+body.is-locked{
+  overflow: hidden;
+  height: 100vh;
+  height: 100svh;
+  touch-action: none;
+  overscroll-behavior: none;
+}
+body.is-locked .hero{
+  min-height: 100vh;
+  min-height: 100svh;
+}
+
 img{ max-width: 100%; display: block; }
 
 a{ color: inherit; text-decoration: none; }
@@ -104,7 +117,7 @@ button:focus-visible{
   object-fit: cover;
   object-position: center 22%;
   opacity: 0;
-  filter: grayscale(0.1) contrast(1.05) brightness(0.68);
+  filter: grayscale(0.1) contrast(1.05) brightness(0.8);
   transform: scale(1) scaleY(1) translateY(0);
   will-change: transform, opacity;
 }
@@ -113,8 +126,8 @@ button:focus-visible{
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.35) 35%, rgba(0,0,0,0.6) 70%, rgba(0,0,0,0.92) 100%),
-    linear-gradient(0deg, rgba(0,0,0,0.3), rgba(0,0,0,0.3));
+    linear-gradient(180deg, rgba(0,0,0,0.48) 0%, rgba(0,0,0,0.28) 35%, rgba(0,0,0,0.52) 70%, rgba(0,0,0,0.88) 100%),
+    linear-gradient(0deg, rgba(0,0,0,0.22), rgba(0,0,0,0.22));
 }
 
 /* ============== MARCO Y ESQUINAS ART-DECÓ ============== */
@@ -372,6 +385,59 @@ body::before{
   font-size: 0.7rem;
 }
 
+/* ============== PANTALLA DE CARGA (SPLASH) ============== */
+.splash{
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  background: var(--black);
+  transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+.splash--hidden{
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+.splash__monogram{
+  font-family: var(--font-display);
+  font-size: 2.6rem;
+  color: var(--gold-light);
+  letter-spacing: 0.04em;
+  animation: splash-pulse 1.8s ease-in-out infinite;
+}
+.splash__line{
+  width: 120px;
+  height: 1px;
+  background: var(--gold-mist);
+  position: relative;
+  overflow: hidden;
+}
+.splash__line::after{
+  content: "";
+  position: absolute;
+  top: 0; left: -40%;
+  width: 40%;
+  height: 100%;
+  background: var(--gold-light);
+  animation: splash-sweep 1.3s ease-in-out infinite;
+}
+@keyframes splash-pulse{
+  0%, 100%{ opacity: 0.55; }
+  50%{ opacity: 1; }
+}
+@keyframes splash-sweep{
+  0%{ left: -40%; }
+  100%{ left: 100%; }
+}
+@media (prefers-reduced-motion: reduce){
+  .splash__monogram, .splash__line::after{ animation: none; }
+}
+
 /* ============== MUSIC BUTTON ============== */
 .music-btn{
   position: fixed;
@@ -487,7 +553,7 @@ body::before{
   font-family: var(--font-script);
   font-style: italic;
   font-weight: 500;
-  font-size: clamp(1.05rem, 4vw, 1.4rem);
+  font-size: clamp(1.3rem, 5.2vw, 1.85rem);
   letter-spacing: 0.08em;
   color: var(--gold-light);
   margin: 0 0 4px;
@@ -553,6 +619,11 @@ body::before{
   border: 1px solid var(--gold-mist);
   border-radius: 12px;
   opacity: 0.6;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+body.is-locked .scroll-hint{
+  opacity: 0;
+  visibility: hidden;
 }
 .scroll-hint span{
   position: absolute;
@@ -754,6 +825,44 @@ body::before{
 @media (max-width: 420px){
   .details-grid{ grid-template-columns: 1fr; }
 }
+
+.details-actions{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+
+.calendar-menu{
+  position: relative;
+}
+.calendar-menu__list{
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  min-width: 200px;
+  background: var(--black-card);
+  border: 1px solid var(--gold-mist);
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 14px 34px rgba(0,0,0,0.6);
+}
+.calendar-menu__list[hidden]{ display: none; }
+.calendar-menu__list a{
+  padding: 12px 18px;
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  color: var(--gold-light);
+  text-decoration: none;
+  border-bottom: 1px solid var(--black-line);
+  text-align: left;
+}
+.calendar-menu__list a:last-child{ border-bottom: none; }
+.calendar-menu__list a:hover{ background: rgba(212,175,55,0.08); }
 
 /* ============== GALLERY ============== */
 .gallery{
