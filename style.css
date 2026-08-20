@@ -545,12 +545,12 @@ body::before{
 .eyebrow{
   font-family: var(--font-script);
   font-style: italic;
-  font-weight: 500;
-  font-size: clamp(1.3rem, 5.2vw, 1.85rem);
-  letter-spacing: 0.08em;
+  font-weight: 600;
+  font-size: clamp(1.6rem, 6.8vw, 2.35rem);
+  letter-spacing: 0.07em;
   color: var(--gold-light);
-  margin: 0 0 4px;
-  opacity: 0.92;
+  margin: 0 0 6px;
+  opacity: 1;
 }
 
 .hero__name{
