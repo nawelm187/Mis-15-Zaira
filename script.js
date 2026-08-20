@@ -17,10 +17,13 @@ const CONFIG = {
   direccion: "Mármol 248, B2752 Cap. Sarmiento, Provincia de Buenos Aires",
   maps: "https://maps.app.goo.gl/sR8Av94uo7G55TpX6",
 
-  // Formulario de confirmación de asistencia (Google Forms).
-  // Pegá acá el link de tu formulario, tal cual lo copiás de "Enviar" → pestaña de link.
-  // El script arma automáticamente la versión "embebida" a partir de este link.
-  googleFormUrl: "https://forms.gle/dTb7YN81ojq3YG6u9", // ej: "https://forms.gle/xxxxx" o "https://docs.google.com/forms/d/e/.../viewform"
+  // Formulario de confirmación de asistencia (Google Forms) — ya no se usa,
+  // se dejó como referencia por si en el futuro querés volver a activarlo.
+  googleFormUrl: "https://forms.gle/dTb7YN81ojq3YG6u9",
+
+  // Confirmación de asistencia por WhatsApp.
+  whatsapp: "5492478575324",            // ej: "5491122334455" (código país + número, sin + ni espacios)
+  mensajeWhatsapp: "¡Hola! ✨ Con muchísima alegría confirmo que voy a estar presente en la celebración de tus 15, Zaira. ¡Ya tengo muchas ganas de acompañarte en una noche tan especial! 🤍🥂",
 
   instagram: "zaiimadariaga_",          // ej: "https://instagram.com/zaira" o "@zaira" — dejar "" para ocultar
 
@@ -35,7 +38,6 @@ document.addEventListener("DOMContentLoaded", () => {
   initMusic();
   initGallery();
   initLightbox();
-  initRsvpModal();
   initConfetti();
   initPhotoBackdrop();
   initSplash();
@@ -64,12 +66,16 @@ function applyConfig(){
     }
   }
 
-  // Formulario de confirmación (Google Forms) — botón único
-  const rsvpBtn = document.getElementById("rsvp-open");
-  if (rsvpBtn){
-    if (isPlaceholder(CONFIG.googleFormUrl)){
-      rsvpBtn.setAttribute("aria-disabled", "true");
-      rsvpBtn.title = "El formulario todavía no está configurado";
+  // Confirmación de asistencia por WhatsApp
+  const rsvpLink = document.getElementById("rsvp-link");
+  if (rsvpLink){
+    const waHref = buildWhatsappLink(CONFIG.whatsapp, CONFIG.mensajeWhatsapp);
+    if (waHref){
+      rsvpLink.href = waHref;
+    } else {
+      rsvpLink.href = "#rsvp";
+      rsvpLink.setAttribute("aria-disabled", "true");
+      rsvpLink.addEventListener("click", (e) => e.preventDefault());
     }
   }
 
@@ -97,17 +103,11 @@ function isPlaceholder(value){
   return !value || /^\[.*\]$/.test(value.trim());
 }
 
-/* Convierte cualquier link de Google Forms (forms.gle o docs.google.com)
-   en su versión embebida dentro de un iframe. */
-function toEmbeddableFormUrl(url){
-  let clean = url.trim();
-  // Si ya tiene parámetros, respetarlos y solo asegurar embedded=true
-  if (/[?&]embedded=true/.test(clean)) return clean;
-  if (/\/viewform/.test(clean)){
-    return clean.split("?")[0] + "?embedded=true";
-  }
-  // Links cortos forms.gle: Google los resuelve igual con el parámetro.
-  return clean + (clean.includes("?") ? "&" : "?") + "embedded=true";
+function buildWhatsappLink(number, message){
+  if (isPlaceholder(number)) return null;
+  const digits = number.replace(/[^\d]/g, "");
+  if (!digits) return null;
+  return `https://wa.me/${digits}?text=${encodeURIComponent(message)}`;
 }
 
 function normalizeInstagram(value){
@@ -364,47 +364,6 @@ function renderLightboxImage(){
   if (!img || !data) return;
   img.src = data.src;
   img.alt = data.alt || "";
-}
-
-/* ---------------------------------------------------------
-   Modal de confirmación (Google Forms embebido)
-   --------------------------------------------------------- */
-function initRsvpModal(){
-  const openBtn = document.getElementById("rsvp-open");
-  const modal = document.getElementById("rsvp-modal");
-  const closeBtn = document.getElementById("rsvp-modal-close");
-  const body = document.getElementById("rsvp-modal-body");
-  if (!openBtn || !modal || !body) return;
-
-  openBtn.addEventListener("click", () => {
-    if (isPlaceholder(CONFIG.googleFormUrl)){
-      // Formulario aún no configurado: no rompe nada, solo no abre.
-      return;
-    }
-    // Insertar el iframe recién al abrir, para no cargar Google Forms de más.
-    if (!body.querySelector("iframe")){
-      const iframe = document.createElement("iframe");
-      iframe.src = toEmbeddableFormUrl(CONFIG.googleFormUrl);
-      iframe.title = "Formulario de confirmación de asistencia";
-      iframe.loading = "lazy";
-      body.appendChild(iframe);
-    }
-    modal.hidden = false;
-    document.body.style.overflow = "hidden";
-  });
-
-  function closeModal(){
-    modal.hidden = true;
-    document.body.style.overflow = "";
-  }
-
-  closeBtn.addEventListener("click", closeModal);
-  modal.addEventListener("click", (e) => {
-    if (e.target === modal) closeModal();
-  });
-  document.addEventListener("keydown", (e) => {
-    if (!modal.hidden && e.key === "Escape") closeModal();
-  });
 }
 
 /* ---------------------------------------------------------

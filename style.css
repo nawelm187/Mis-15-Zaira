@@ -482,13 +482,6 @@ body::before{
   inset: 0;
   z-index: 0;
 }
-.hero__photo{
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center 20%;
-  filter: grayscale(0.15) contrast(1.05) brightness(0.72);
-}
 .hero__overlay{
   position: absolute;
   inset: 0;
@@ -963,69 +956,6 @@ body.is-locked .scroll-hint{
 .lightbox__nav--next{ right: max(10px, env(safe-area-inset-right)); top: 50%; transform: translateY(-50%); }
 .lightbox__nav:hover, .lightbox__close:hover{ border-color: var(--gold); }
 
-/* ============== RSVP MODAL (Google Forms) ============== */
-.rsvp-modal{
-  position: fixed;
-  inset: 0;
-  z-index: 950;
-  background: rgba(0,0,0,0.85);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: max(20px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(20px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
-  animation: fadein 0.3s ease;
-}
-.rsvp-modal[hidden]{ display: none; }
-
-.rsvp-modal__panel{
-  position: relative;
-  width: 100%;
-  max-width: 560px;
-  height: min(88vh, 780px);
-  background: var(--black-soft);
-  border: 1px solid var(--gold-mist);
-  box-shadow: 0 20px 60px rgba(0,0,0,0.7);
-  border-radius: 4px;
-  overflow: hidden;
-}
-
-.rsvp-modal__body{
-  width: 100%;
-  height: 100%;
-}
-.rsvp-modal__body iframe{
-  width: 100%;
-  height: 100%;
-  border: 0;
-  background: #fff;
-}
-
-.rsvp-modal__close{
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  z-index: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  border: 1px solid var(--gold-mist);
-  background: rgba(7,6,5,0.75);
-  color: var(--gold-light);
-}
-.rsvp-modal__close svg{
-  width: 16px;
-  height: 16px;
-  fill: none;
-  stroke: var(--gold-light);
-  stroke-width: 2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-.rsvp-modal__close:hover{ border-color: var(--gold); }
-
 /* ============== DRESS CODE ============== */
 .dresscode-section .section__title{ margin-bottom: 0; }
 
@@ -1093,17 +1023,6 @@ body.is-locked .scroll-hint{
 /* ============== DESKTOP ENHANCEMENTS ============== */
 @media (min-width: 860px){
   :root{ --container: 760px; }
-
-  .hero{ align-items: center; justify-content: flex-start; padding-left: 9vw; text-align: left; }
-  .hero__content{ align-items: flex-start; text-align: left; margin: 0; }
-  .hero__rule{ margin-left: 0; }
-  .hero__tagline{ max-width: 30ch; }
-  .hero__photo{ object-position: 68% 22%; }
-  .hero__overlay{
-    background:
-      linear-gradient(90deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.15) 55%, rgba(0,0,0,0.2) 100%),
-      linear-gradient(0deg, rgba(0,0,0,0.35), rgba(0,0,0,0.65) 100%);
-  }
 
   .gallery{ grid-template-columns: repeat(4, 1fr); }
   .gallery__item--tall{ grid-row: span 2; }

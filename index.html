@@ -274,18 +274,6 @@
     </button>
   </div>
 
-  <!-- Modal RSVP (Google Forms embebido) -->
-  <div class="rsvp-modal" id="rsvp-modal" role="dialog" aria-modal="true" aria-label="Formulario de confirmación de asistencia" hidden>
-    <div class="rsvp-modal__panel">
-      <button class="rsvp-modal__close" id="rsvp-modal-close" aria-label="Cerrar formulario">
-        <svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>
-      </button>
-      <div class="rsvp-modal__body" id="rsvp-modal-body">
-        <!-- El iframe se inserta por JS solo cuando se abre, para no cargar de más -->
-      </div>
-    </div>
-  </div>
-
   <div class="divider reveal" data-reveal aria-hidden="true"><span></span></div>
 
   <!-- ================= DRESS CODE ================= -->
@@ -300,10 +288,10 @@
   <section class="section rsvp-section" id="rsvp">
     <p class="section__eyebrow reveal" data-reveal>Confirmación</p>
     <h2 class="section__title reveal" data-reveal>¿Venís a celebrar conmigo?</h2>
-    <p class="rsvp__text reveal" data-reveal>Confirmá tu asistencia</p>
-    <button type="button" id="rsvp-open" class="btn btn--gold reveal" data-reveal>
+    <p class="rsvp__text reveal" data-reveal>Confirmá tu asistencia por WhatsApp, así puedo organizar todo con cariño</p>
+    <a href="#" id="rsvp-link" class="btn btn--gold reveal" data-reveal target="_blank" rel="noopener noreferrer">
       <span>Confirmar asistencia</span>
-    </button>
+    </a>
   </section>
 
   <!-- ================= INSTAGRAM ================= -->
