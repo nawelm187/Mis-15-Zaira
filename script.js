@@ -27,7 +27,7 @@ const CONFIG = {
 
   instagram: "zaiimadariaga_",          // ej: "https://instagram.com/zaira" o "@zaira" — dejar "" para ocultar
 
-  dressCode: "Elegante"          // ej: "Elegante Sport"
+  dressCode: "Elegant Sport"          // ej: "Elegante Sport"
 };
 
 document.addEventListener("DOMContentLoaded", () => {
